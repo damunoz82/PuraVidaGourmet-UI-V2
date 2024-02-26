@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router'
+import { AdminMainPageComponent } from './admin/admin-main-page/admin-main-page.component';
+import { HomePageComponent } from './home-page/home-page.component';
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterModule, RouterOutlet, AdminMainPageComponent, HomePageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'PuraVidaGourmet-UI-V2';
 }
