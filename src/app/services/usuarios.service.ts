@@ -16,12 +16,6 @@ export class UsuariosService {
     private _storageService: StorageService) { }
 
   getUsuarios(): Observable<User[]> {
-    const headers = new HttpHeaders(
-      {
-        'Content-Type':  'application/json',
-        Authorization: 'Bearer ' + this._storageService.getSessionInfo().accessToken
-      }
-    );
-    return this._http.get<User[]>(this.url, { headers: headers});
+    return this._http.get<User[]>(this.url, { headers: this._storageService.buildHeader()});
   }
 }

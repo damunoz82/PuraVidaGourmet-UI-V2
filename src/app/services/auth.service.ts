@@ -33,6 +33,6 @@ export class AuthService {
         Authorization: 'Bearer ' + this._storageService.getSessionInfo().refreshToken,
       }
     );
-    return this._http.post<TokenInfo>(this.url + "refresh-token", { headers: headers});
+    return this._http.post<TokenInfo>(this.url + "refresh-token", {}, { headers: headers});
   }
 }

@@ -1,0 +1,99 @@
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Administracion de Tipo de Receta</h1>
+            
+            <!-- alert -->
+            <div [ngStyle]="{display: alertShowing ? 'block' : 'none'}">
+                <div class="alert alert-{{alertInfo.type}} alert-dismissible fade show" role="alert">
+                    {{alertInfo.message}}
+                    <button type="button" class="btn-close" aria-label="Close" (click)="alertShowing = false"></button>
+                </div>
+            </div>
+
+            <!-- modal confirm deletion-->
+            <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmDeleteLabel">Confirmar Eliminacion de Tipo de Receta</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Se intentara eliminar el tipo de receta '{{delTipoReceta.nombre}}', sin embargo, si esta asociado no se podra eliminar.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="confirmDelete()">Eliminar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for to create or edit -->
+            <div [ngStyle]="{display: formShowing ? 'block' : 'none'}" class="row">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Agregar o Editar un Tipo de Receta
+                    </div>
+                    <div class="card-body">
+                        <form name="tipoRecetaForm" [formGroup]="tipoRecetaForm" (ngSubmit)="tipoRecetaForm.valid && onSubmit()" novalidate>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Nombre del Tipo de Receta</label>
+                                        <input type="hidden" name="id" formControlName="id"/>
+                                        <input type="text" class="form-control" name="nombre" aria-describedby="nombreHelp" formControlName="nombre" [ngClass]="{ 'is-invalid': tipoRecetaForm.get('nombre')?.touched && tipoRecetaForm.get('nombre')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!tipoRecetaForm.get('nombre')?.valid">
+                                            <div id="nombreHelp" class="form-text">El nombre es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" [disabled]="!tipoRecetaForm.valid" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- list-->
+            <div class="row">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Tipos de Recetas
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let tipoReceta of tipoRecetas">
+                                    <td (click)="edit(tipoReceta.id)"><a>{{tipoReceta.nombre}}</a></td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete" (click)="requestDelete(tipoReceta.id)">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div [ngStyle]="{display: formShowing ? 'none' : 'block'}">
+                            <button type="button" class="btn btn-primary" (click)="openForm()">Nuevo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

@@ -16,31 +16,22 @@ export class DepartamentoService {
   }
 
   getDepartments(): Observable<Departamento[]> {
-    return this._http.get<Departamento[]>(this.url, { headers: this.getHeaders()});
+    return this._http.get<Departamento[]>(this.url, { headers: this._storageService.buildHeader()});
   }
 
   getDepartmentsById(id: number): Observable<Departamento> {
-    return this._http.get<Departamento>(this.url + "/" + id, { headers: this.getHeaders()});
+    return this._http.get<Departamento>(this.url + "/" + id, { headers: this._storageService.buildHeader()});
   }
 
   nuevoDepartamento(departamento: Departamento): Observable<Departamento> {
-    return this._http.post<Departamento>(this.url, departamento, {headers: this.getHeaders()});
+    return this._http.post<Departamento>(this.url, departamento, {headers: this._storageService.buildHeader()});
   }
 
   updateDepartamento(departamento: Departamento): Observable<Departamento> {
-    return this._http.put<Departamento>(this.url + "/" + departamento.id, departamento, {headers: this.getHeaders()});
+    return this._http.put<Departamento>(this.url + "/" + departamento.id, departamento, {headers: this._storageService.buildHeader()});
   }
 
   deleteDepartamento(departamento: Departamento): Observable<Departamento> {
-    return this._http.delete<Departamento>(this.url + "/" + departamento.id, {headers: this.getHeaders()});
-  }
-
-  getHeaders(): HttpHeaders {
-    return new HttpHeaders(
-      {
-        'Content-Type':  'application/json',
-        Authorization: 'Bearer ' + this._storageService.getSessionInfo().accessToken,
-      }
-    );
+    return this._http.delete<Departamento>(this.url + "/" + departamento.id, {headers: this._storageService.buildHeader()});
   }
 }

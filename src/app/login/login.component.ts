@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit {
     this._authService.login(user).pipe(
         catchError(this.handleError('loginRequest'))
       ).subscribe((loginInfo) => {
+        this._storageService.clean();
         this._storageService.setSessionInfo(loginInfo as TokenInfo);
         this._router.navigate(['/admin']);
       });

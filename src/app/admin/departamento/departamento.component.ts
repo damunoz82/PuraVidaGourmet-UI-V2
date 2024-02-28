@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, catchError, throwError } from 'rxjs';
 
-
+ 
 @Component({
   selector: 'app-departamento',
   standalone: true,

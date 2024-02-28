@@ -1,0 +1,187 @@
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Administracion de Productos</h1>
+            
+            <!-- alert -->
+            <div [ngStyle]="{display: alertShowing ? 'block' : 'none'}">
+                <div class="alert alert-{{alertInfo.type}} alert-dismissible fade show" role="alert">
+                    {{alertInfo.message}}
+                    <button type="button" class="btn-close" aria-label="Close" (click)="alertShowing = false"></button>
+                </div>
+            </div>
+
+            <!-- modal confirm deletion-->
+            <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmDeleteLabel">Confirmar Eliminacion de Tipo de Receta</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Se intentara eliminar el producto '{{delProducto.nombre}}', sin embargo, si esta asociado no se podra eliminar.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="confirmDelete()">Eliminar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for to create or edit -->
+            <div [ngStyle]="{display: formShowing ? 'block' : 'none'}" class="row">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Agregar o Editar un Producto
+                    </div>
+                    <div class="card-body">
+                        <form name="productoForm" [formGroup]="productoForm" (ngSubmit)="productoForm.valid && onSubmit()" novalidate>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Nombre del producto</label>
+                                        <input type="hidden" name="id" formControlName="id"/>
+                                        <input type="text" class="form-control" name="nombre" aria-describedby="nombreHelp" formControlName="nombre" [ngClass]="{ 'is-invalid': productoForm.get('nombre')?.touched && productoForm.get('nombre')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!productoForm.get('nombre')?.valid">
+                                            <div id="nombreHelp" class="form-text">El nombre es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="proveedor" class="form-label">Nombre del proveedor</label>
+                                        <input type="text" class="form-control" name="proveedor" aria-describedby="proveedorHelp" formControlName="proveedor" [ngClass]="{ 'is-invalid': productoForm.get('proveedor')?.touched && productoForm.get('proveedor')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!productoForm.get('proveedor')?.valid">
+                                            <div id="proveedorHelp" class="form-text">El proveedor es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="tipoProducto" class="form-label">Tipo de producto</label>
+                                        <select class="form-select" name="tipoProducto" aria-describedby="tipoProductoHelp" formControlName="tipoProducto" [ngClass]="{ 'is-invalid': productoForm.get('tipoProducto')?.touched && productoForm.get('tipoProducto')?.errors}" >
+                                            <option *ngFor="let tp of tipoProductos" value="{{tp.id}}">{{tp.nombre}}</option>
+                                        </select>
+                                        <div class="invalid-feedback" *ngIf="!productoForm.get('tipoProducto')?.valid">
+                                            <div id="tipoProductoHelp" class="form-text">El tipo de producto es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="unidadMedida" class="form-label">Unidad de medida</label>
+                                        <select class="form-select" name="unidadMedida" aria-describedby="unidadMedidaHelp" formControlName="unidadMedida" [ngClass]="{ 'is-invalid': productoForm.get('unidadMedida')?.touched && productoForm.get('unidadMedida')?.errors}">
+                                            <option value="GRAMOS">GRAMOS</option>
+                                            <option value="MILI_LITROS">MILI_LITROS</option>
+                                            <option value="UNIDAD">UNIDAD</option>
+                                        </select>
+                                        <div class="invalid-feedback" *ngIf="!productoForm.get('unidadMedida')?.valid">
+                                            <div id="unidadMedidaHelp" class="form-text">La unidad de medida es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="precioDeCompra" class="form-label">Precio de compra</label>
+                                        <input type="text" class="form-control" name="precioDeCompra" aria-describedby="precioDeCompra" formControlName="precioDeCompra" [ngClass]="{ 'is-invalid': productoForm.get('precioDeCompra')?.touched && productoForm.get('precioDeCompra')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!productoForm.get('precioDeCompra')?.valid">
+                                            <div id="precioDeCompraHelp" class="form-text">El precio de compra es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="cantidadPorUnidad" class="form-label">Cantidad por unidad</label>
+                                        <input type="text" class="form-control" name="cantidadPorUnidad" aria-describedby="cantidadPorUnidadHelp" formControlName="cantidadPorUnidad" [ngClass]="{ 'is-invalid': productoForm.get('cantidadPorUnidad')?.touched && productoForm.get('cantidadPorUnidad')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!productoForm.get('cantidadPorUnidad')?.valid">
+                                            <div id="cantidadPorUnidadHelp" class="form-text">La cantidad por unidad es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="formatoCompra" class="form-label">Formato de compra</label>
+                                        <select class="form-select" name="formatoCompra" aria-describedby="formatoCompraHelp" formControlName="formatoCompra" [ngClass]="{ 'is-invalid': productoForm.get('formatoCompra')?.touched && productoForm.get('formatoCompra')?.errors}">
+                                            <option value="PAQUETE">PAQUETE</option>
+                                            <option value="ROLLO">ROLLO</option>
+                                            <option value="BOTELLA">BOTELLA</option>
+                                            <option value="OTRO">OTRO</option>
+                                        </select>
+                                        <div class="invalid-feedback" *ngIf="!productoForm.get('formatoCompra')?.valid">
+                                            <div id="formatoCompraHelp" class="form-text">El formato de compra es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="porcentajeMerma" class="form-label">Porcentaje de merma</label>
+                                        <input type="text" class="form-control" name="porcentajeMerma" aria-describedby="porcentajeMerma" formControlName="porcentajeMerma" [ngClass]="{ 'is-invalid': productoForm.get('porcentajeMerma')?.touched && productoForm.get('porcentajeMerma')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!productoForm.get('porcentajeMerma')?.valid">
+                                            <div id="porcentajeMermaHelp" class="form-text">El porcentaje de merma es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" [disabled]="!productoForm.valid" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- list-->
+            <div class="row">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Tipos de Recetas
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Proveedor</th>
+                                    <th>Unidad/Cantidad</th>
+                                    <th>Precio de Compra</th>
+                                    <th>Costo Unitario</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let producto of productos">
+                                    <td (click)="edit(producto.id)"><a>{{producto.nombre}}</a></td>
+                                    <td>{{producto.proveedor}}</td>
+                                    <td>{{producto.unidadMedida}} / {{producto.cantidadPorUnidad}}</td>
+                                    <td>{{producto.precioDeCompra}}</td>
+                                    <td>{{producto.costeUnitario}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete" (click)="requestDelete(producto.id)">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div [ngStyle]="{display: formShowing ? 'none' : 'block'}">
+                            <button type="button" class="btn btn-primary" (click)="openForm()">Nuevo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
