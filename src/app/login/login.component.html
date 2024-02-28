@@ -4,6 +4,18 @@
         <div id="layoutAuthentication_content">
             <main>
                 <div class="container">
+
+                    <!-- alert -->
+                    <div class="row justify-content-center"><div class="col-lg-5">
+                        <div [ngStyle]="{display: alertShowing ? 'block' : 'none'}">
+                            <div class="alert alert-{{alertInfo.type}} alert-dismissible fade show" role="alert">
+                                {{alertInfo.message}}
+                                <button type="button" class="btn-close" aria-label="Close" (click)="alertShowing = false"></button>
+                            </div>
+                        </div>
+                    </div></div>
+
+                    <!-- Login form -->
                     <div class="row justify-content-center">
                         <div class="col-lg-5">
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
@@ -18,18 +30,13 @@
                                             <input class="form-control" [(ngModel)]="inputPassword" name="inputPassword" type="password" />
                                             <label for="inputPassword">Contrasenia</label>
                                         </div>
-                                        <div class="form-check mb-3">
-                                            <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
-                                            <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
-                                        </div>
                                         <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                            <a class="small" href="password.html">Forgot Password?</a>
                                             <a class="btn btn-primary" (click)="login()">Login</a>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="card-footer text-center py-3">
-                                    <div class="small"><a routerLink="/">Need an account? Sign up!</a></div>
+                                    <div class="small"><a routerLink="/">No tienes una cuenta? Registrate!</a></div>
                                 </div>
                             </div>
                         </div>

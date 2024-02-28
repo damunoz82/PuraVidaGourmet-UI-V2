@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router'
+import { StorageService } from '../../services/storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,5 +11,16 @@ import { RouterModule, RouterOutlet } from '@angular/router'
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+
+  constructor(private _storageService: StorageService,
+    private _router: Router) {
+    
+  }
+
+  logout() {
+    console.log("logging out");
+    this._storageService.clean();
+    this._router.navigate(['']);
+  }
 
 }

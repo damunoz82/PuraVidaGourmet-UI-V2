@@ -2,22 +2,36 @@
     <main>
         <div class="container-fluid px-4">
             <h1 class="mt-4">Administracion de Departamentos</h1>
-            <!-- <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ol> -->
-            <!-- <div class="row">
-                <div class="col-xl-3 col-md-6">
-                    <div class="card bg-primary text-white mb-4">
-                        <div class="card-body">Primary Card</div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <a class="small text-white stretched-link" href="#">View Details</a>
-                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                        </div>
+            
+            <!-- alert -->
+            <div [ngStyle]="{display: alertShowing ? 'block' : 'none'}">
+                <div class="alert alert-{{alertInfo.type}} alert-dismissible fade show" role="alert">
+                    {{alertInfo.message}}
+                    <button type="button" class="btn-close" aria-label="Close" (click)="alertShowing = false"></button>
+                </div>
+            </div>
+
+            <!-- modal confirm deletion-->
+            <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmDeleteLabel">Confirmar Eliminacion de Departamento</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Se intentara eliminar el departamento '{{delDep.nombre}}', sin embargo, si esta asociado no se podra eliminar.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="confirmDelete()">Eliminar</button>
+                    </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
 
-            <div [ngStyle]="{display: formHidden ? 'block' : 'none'}" class="row">
+            <!-- for to create or edit -->
+            <div [ngStyle]="{display: formShowing ? 'block' : 'none'}" class="row">
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
@@ -29,6 +43,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label for="nombre" class="form-label">Nombre del Departamento</label>
+                                        <input type="hidden" name="id" formControlName="id"/>
                                         <input type="text" class="form-control" name="nombre" aria-describedby="nombreHelp" formControlName="nombre" [ngClass]="{ 'is-invalid': departmentoForm.get('nombre')?.touched && departmentoForm.get('nombre')?.errors}">
                                         <div class="invalid-feedback" *ngIf="!departmentoForm.get('nombre')?.valid">
                                             <div id="nombreHelp" class="form-text">El nombre es requerido.</div>  
@@ -53,7 +68,6 @@
                                     <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
                                 </div>
                                 <div class="col">
-                                    <button type="button" class="btn btn-danger" (click)="cancel()">Eliminar</button>
                                     <button type="submit" [disabled]="!departmentoForm.valid" class="btn btn-primary">Salvar</button>
                                 </div>
                             </div>
@@ -62,6 +76,7 @@
                 </div>
             </div>
 
+            <!-- list-->
             <div class="row">
                 <div class="card mb-4">
                     <div class="card-header">
@@ -74,17 +89,21 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Responsable</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let dep of departamentos">
-                                    <td (click)="edit(dep.id)">{{dep.nombre}}</td>
+                                    <td (click)="edit(dep.id)"><a>{{dep.nombre}}</a></td>
                                     <td>{{dep.responsable.name}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete" (click)="requestDelete(dep.id)">Eliminar</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div [ngStyle]="{display: formHidden ? 'none' : 'block'}">
-                            <button type="button" class="btn btn-primary" (click)="new()">New</button>
+                        <div [ngStyle]="{display: formShowing ? 'none' : 'block'}">
+                            <button type="button" class="btn btn-primary" (click)="openForm()">New</button>
                         </div>
                     </div>
                 </div>
