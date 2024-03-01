@@ -1,0 +1,283 @@
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Administracion de Recetas</h1>
+            
+            <!-- alert -->
+            <div [ngStyle]="{display: alertShowing ? 'block' : 'none'}">
+                <div class="alert alert-{{alertInfo.type}} alert-dismissible fade show" role="alert">
+                    {{alertInfo.message}}
+                    <button type="button" class="btn-close" aria-label="Close" (click)="alertShowing = false"></button>
+                </div>
+            </div>
+
+            <!-- modal confirm deletion-->
+            <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmDeleteLabel">Confirmar Eliminacion de Tipo de Receta</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Se intentara eliminar la receta '{{delReceta.nombre}}', sin embargo, si esta asociado no se podra eliminar.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="confirmDelete()">Eliminar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for to create or edit -->
+            <div [ngStyle]="{display: formShowing ? 'block' : 'none'}" class="row">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Agregar o Editar una Receta
+                    </div>
+                    <div class="card-body">
+                        <form name="recetaForm" [formGroup]="recetaForm" (ngSubmit)="recetaForm.valid && onSubmit()" novalidate>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Nombre de la receta</label>
+                                        <input type="hidden" name="id" formControlName="id"/>
+                                        <input type="text" class="form-control" name="nombre" aria-describedby="nombreHelp" formControlName="nombre" [ngClass]="{ 'is-invalid': recetaForm.get('nombre')?.touched && recetaForm.get('nombre')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('nombre')?.valid">
+                                            <div id="nombreHelp" class="form-text">El nombre es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="categoria" class="form-label">Categoria</label>
+                                        <select class="form-select" name="categoria" aria-describedby="categoriaHelp" formControlName="categoria" [ngClass]="{ 'is-invalid': recetaForm.get('categoria')?.touched && recetaForm.get('categoria')?.errors}" >
+                                            <option *ngFor="let tp of tiposRecetas" value="{{tp.id}}">{{tp.nombre}}</option>
+                                        </select>
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('categoria')?.valid">
+                                            <div id="categoriaHelp" class="form-text">La categoria es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="tamanioPorcion" class="form-label">Tamanio de la porcion</label>
+                                        <input type="text" class="form-control" name="tamanioPorcion" aria-describedby="tamanioPorcionHelp" formControlName="tamanioPorcion" [ngClass]="{ 'is-invalid': recetaForm.get('tamanioPorcion')?.touched && recetaForm.get('tamanioPorcion')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('tamanioPorcion')?.valid">
+                                            <div id="tamanioPorcionHelp" class="form-text">El tamanio de la porcion es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="numeroPorciones" class="form-label">Numero de porciones</label>
+                                        <input type="text" class="form-control" name="numeroPorciones" aria-describedby="numeroPorcionesHelp" formControlName="numeroPorciones" [ngClass]="{ 'is-invalid': recetaForm.get('numeroPorciones')?.touched && recetaForm.get('numeroPorciones')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('numeroPorciones')?.valid">
+                                            <div id="numeroPorcionesHelp" class="form-text">El formato de compra es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="temperaturaDeServido" class="form-label">Temperatura de servido</label>
+                                        <input type="text" class="form-control" name="temperaturaDeServido" aria-describedby="temperaturaDeServidoHelp" formControlName="temperaturaDeServido" [ngClass]="{ 'is-invalid': recetaForm.get('temperaturaDeServido')?.touched && recetaForm.get('temperaturaDeServido')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('unidadMedida')?.valid">
+                                            <div id="temperaturaDeServidoHelp" class="form-text">La temperatura de servido es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="tiempoPreparacion" class="form-label">Tiempo de preparacion</label>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" name="tiempoPreparacion" aria-describedby="tiempoPreparacionHelp" formControlName="tiempoPreparacion" [ngClass]="{ 'is-invalid': recetaForm.get('tiempoPreparacion')?.touched && recetaForm.get('tiempoPreparacion')?.errors}">
+                                            <span class="input-group-text">minutos</span>
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('tiempoPreparacion')?.valid">
+                                            <div id="tiempoPreparacionHelp" class="form-text">El tiempo de preparacion es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="tiempoCoccion" class="form-label">Tiempo de coccion</label>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" name="tiempoCoccion" aria-describedby="tiempoCoccionHelp" formControlName="tiempoCoccion" [ngClass]="{ 'is-invalid': recetaForm.get('tiempoCoccion')?.touched && recetaForm.get('tiempoCoccion')?.errors}">
+                                            <span class="input-group-text">minutos</span>
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('tiempoCoccion')?.valid">
+                                            <div id="tiempoCoccionHelp" class="form-text">Tiempo de coccion es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="precioDeVenta" class="form-label">Precio de venta</label>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">₡</span>
+                                            <input type="text" class="form-control" name="precioDeVenta" aria-describedby="precioDeVentaHelp" formControlName="precioDeVenta" [ngClass]="{ 'is-invalid': recetaForm.get('precioDeVenta')?.touched && recetaForm.get('precioDeVenta')?.errors}">
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('precioDeVenta')?.valid">
+                                            <div id="precioDeVentaHelp" class="form-text">El precio de venta es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="impuestos" class="form-label">Impuestos</label>
+                                        <input type="text" class="form-control" name="impuestos" aria-describedby="impuestosHelp" formControlName="impuestos" [ngClass]="{ 'is-invalid': recetaForm.get('impuestos')?.touched && recetaForm.get('impuestos')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('impuestos')?.valid">
+                                            <div id="impuestosHelp" class="form-text">Los impuestos son requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-6">
+                                        <label for="elaboracion" class="form-label">Instrucciones de elaboracion</label>
+                                        <textarea class="form-control" name="elaboracion" aria-describedby="elaboracionHelp" formControlName="elaboracion" [ngClass]="{ 'is-invalid': recetaForm.get('elaboracion')?.touched && recetaForm.get('elaboracion')?.errors}"></textarea>
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('elaboracion')?.valid">
+                                            <div id="elaboracionHelp" class="form-text">La temperatura de servido es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-6">
+                                        <label for="equipoNecesario" class="form-label">Equipo necesario para la elaboracion</label>
+                                        <textarea class="form-control" name="equipoNecesario" aria-describedby="equipoNecesarioHelp" formControlName="equipoNecesario" [ngClass]="{ 'is-invalid': recetaForm.get('equipoNecesario')?.touched && recetaForm.get('equipoNecesario')?.errors}"></textarea>
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('equipoNecesario')?.valid">
+                                            <div id="equipoNecesarioHelp" class="form-text">La temperatura de servido es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-6">
+                                        <label for="alergenos" class="form-label">Alergenos</label>
+                                        <textarea class="form-control" name="alergenos" aria-describedby="alergenosHelp" formControlName="alergenos" [ngClass]="{ 'is-invalid': recetaForm.get('alergenos')?.touched && recetaForm.get('alergenos')?.errors}"></textarea>
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('alergenos')?.valid">
+                                            <div id="alergenosHelp" class="form-text">Los alergenos es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-6">
+                                        <label for="alergenos" class="form-label">Ingredientes    </label>
+                                        <button type="button" class="btn btn-primary" (click)="aggregarIngrediente()">+</button>
+                                        <div class="invalid-feedback" *ngIf="!recetaForm.get('ingredientes')?.valid">
+                                            <div id="alergenosHelp" class="form-text">Los ingredientes son requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div formGroupName="ingredientes">
+                                @for (ingrediente of formIngredientes.controls; track $index) {
+                                    <div class="row" [formGroupName]="$index">
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <label for="producto" class="form-label">Producto {{ $index + 1 }}</label>
+                                                <input type="hidden" name="ingredienteId" formControlName="ingredienteId"/>
+                                                <select class="form-select" name="producto.id" aria-describedby="productoHelp" formControlName="producto" [ngClass]="{ 'is-invalid': recetaForm.get('producto.id')?.touched && recetaForm.get('producto.id')?.errors}"> <!-- [formControlName]="recetaForm.value.ingredientes[$index].producto.id" -->
+                                                    <option *ngFor="let p of productos" value="{{p.id}}">{{p.nombre}}</option>
+                                                </select>
+                                                <div class="invalid-feedback" *ngIf="!recetaForm.get('producto')?.valid">
+                                                    <div id="productoHelp" class="form-text">El producto es requerido.</div>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <label for="cantidad" class="form-label">Cantidad</label>
+                                                <input type="text" class="form-control" name="cantidad" aria-describedby="cantidadHelp" formControlName="cantidad" [ngClass]="{ 'is-invalid': recetaForm.get('cantidad')?.touched && recetaForm.get('cantidad')?.errors}">
+                                                <div class="invalid-feedback" *ngIf="!recetaForm.get('cantidad')?.valid">
+                                                    <div id="cantidadHelp" class="form-text">La cantidad es requerida.</div>  
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <label class="form-label"></label>
+                                                <button type="button" class="btn btn-danger btn-sm" (click)="quitarIngrediente($index)">Quitar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" [disabled]="!recetaForm.valid" class="btn btn-primary">Salvar</button>
+                                    <!-- <button type="button" (click)="getFormValidationErrors()">
+                                        Test Form
+                                      </button> -->
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- list-->
+            <div class="row">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Recetas
+                        <!-- {{recetaForm.value | json }} -->
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Categoria</th>
+                                    <th>Precio de Venta</th>
+                                    <th>Costo de la Receta</th>
+                                    <th>Costo de porcion</th>
+                                    <th>Margen de Ganancia</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let receta of recetas">
+                                    <td (click)="edit(receta.id)"><a>{{receta.nombre}}</a></td>
+                                    <td>{{receta.categoria.nombre}}</td>
+                                    <td>₡ {{receta.precioDeVenta}}</td>
+                                    <td>₡ {{receta.costoReceta}}</td>
+                                    <td>₡ {{receta.costoPorcion}}</td>
+                                    <td>{{receta.margenGanancia}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete" (click)="requestDelete(receta.id)">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div [ngStyle]="{display: formShowing ? 'none' : 'block'}">
+                            <button type="button" class="btn btn-primary" (click)="openForm()">Nuevo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

@@ -74,6 +74,22 @@
                                 </div>
                                 <div class="col">
                                     <div class="mb-3">
+                                        <label for="formatoCompra" class="form-label">Formato de compra</label>
+                                        <select class="form-select" name="formatoCompra" aria-describedby="formatoCompraHelp" formControlName="formatoCompra" [ngClass]="{ 'is-invalid': productoForm.get('formatoCompra')?.touched && productoForm.get('formatoCompra')?.errors}">
+                                            <option value="PAQUETE">PAQUETE</option>
+                                            <option value="ROLLO">ROLLO</option>
+                                            <option value="BOTELLA">BOTELLA</option>
+                                            <option value="OTRO">OTRO</option>
+                                        </select>
+                                        <div class="invalid-feedback" *ngIf="!productoForm.get('formatoCompra')?.valid">
+                                            <div id="formatoCompraHelp" class="form-text">El formato de compra es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
                                         <label for="unidadMedida" class="form-label">Unidad de medida</label>
                                         <select class="form-select" name="unidadMedida" aria-describedby="unidadMedidaHelp" formControlName="unidadMedida" [ngClass]="{ 'is-invalid': productoForm.get('unidadMedida')?.touched && productoForm.get('unidadMedida')?.errors}">
                                             <option value="GRAMOS">GRAMOS</option>
@@ -82,17 +98,6 @@
                                         </select>
                                         <div class="invalid-feedback" *ngIf="!productoForm.get('unidadMedida')?.valid">
                                             <div id="unidadMedidaHelp" class="form-text">La unidad de medida es requerido.</div>  
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="mb-3">
-                                        <label for="precioDeCompra" class="form-label">Precio de compra</label>
-                                        <input type="text" class="form-control" name="precioDeCompra" aria-describedby="precioDeCompra" formControlName="precioDeCompra" [ngClass]="{ 'is-invalid': productoForm.get('precioDeCompra')?.touched && productoForm.get('precioDeCompra')?.errors}">
-                                        <div class="invalid-feedback" *ngIf="!productoForm.get('precioDeCompra')?.valid">
-                                            <div id="precioDeCompraHelp" class="form-text">El precio de compra es requerido.</div>  
                                         </div>
                                     </div>
                                 </div>
@@ -109,15 +114,13 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <label for="formatoCompra" class="form-label">Formato de compra</label>
-                                        <select class="form-select" name="formatoCompra" aria-describedby="formatoCompraHelp" formControlName="formatoCompra" [ngClass]="{ 'is-invalid': productoForm.get('formatoCompra')?.touched && productoForm.get('formatoCompra')?.errors}">
-                                            <option value="PAQUETE">PAQUETE</option>
-                                            <option value="ROLLO">ROLLO</option>
-                                            <option value="BOTELLA">BOTELLA</option>
-                                            <option value="OTRO">OTRO</option>
-                                        </select>
-                                        <div class="invalid-feedback" *ngIf="!productoForm.get('formatoCompra')?.valid">
-                                            <div id="formatoCompraHelp" class="form-text">El formato de compra es requerido.</div>  
+                                        <label for="precioDeCompra" class="form-label">Precio de compra</label>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text">₡</span>
+                                            <input type="text" class="form-control" name="precioDeCompra" aria-describedby="precioDeCompraHelp" formControlName="precioDeCompra" [ngClass]="{ 'is-invalid': productoForm.get('precioDeCompra')?.touched && productoForm.get('precioDeCompra')?.errors}">
+                                        </div>
+                                        <div class="invalid-feedback" *ngIf="!productoForm.get('precioDeCompra')?.valid">
+                                            <div id="precioDeCompraHelp" class="form-text">El precio de compra es requerido.</div>  
                                         </div>
                                     </div>
                                 </div>
@@ -137,6 +140,9 @@
                                 </div>
                                 <div class="col">
                                     <button type="submit" [disabled]="!productoForm.valid" class="btn btn-primary">Salvar</button>
+                                    <!-- <button type="button" (click)="getFormValidationErrors()">
+                                        Test Form
+                                      </button> -->
                                 </div>
                             </div>
                         </form>
@@ -149,7 +155,7 @@
                 <div class="card mb-4">
                     <div class="card-header">
                         <i class="fas fa-table me-1"></i>
-                        Tipos de Recetas
+                        Productos
                     </div>
                     <div class="card-body">
                         <table id="datatablesSimple" class="table">
@@ -168,8 +174,8 @@
                                     <td (click)="edit(producto.id)"><a>{{producto.nombre}}</a></td>
                                     <td>{{producto.proveedor}}</td>
                                     <td>{{producto.unidadMedida}} / {{producto.cantidadPorUnidad}}</td>
-                                    <td>{{producto.precioDeCompra}}</td>
-                                    <td>{{producto.costeUnitario}}</td>
+                                    <td>₡ {{producto.precioDeCompra}}</td>
+                                    <td><b>₡ {{producto.costeUnitario}}</b></td>
                                     <td>
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete" (click)="requestDelete(producto.id)">Eliminar</button>
                                     </td>

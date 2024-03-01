@@ -9,7 +9,6 @@ import { AuthService } from '../services/auth.service';
 import { TokenInfo } from '../interfaces/tokenInfo';
 
 export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
-  console.log('in refreshTokenInterceptor');
   let isRefreshing = false;
   let storageService = inject(StorageService);
   let authService = inject(AuthService);
@@ -33,12 +32,10 @@ export const refreshTokenInterceptor: HttpInterceptorFn = (req, next) => {
                   storageService.setSessionInfo(loginInfo as TokenInfo);
               }),
               catchError((error) => {
-                console.log(error);
                 router.navigate(['/login']);
                 return throwError(() => error);
               })
             ).subscribe(loginInfo => {
-              console.log(loginInfo);
               return next(req.clone({
                 headers: req.headers.set('Authorization', 'Bearer ' + storageService.getSessionInfo().accessToken)
               }));

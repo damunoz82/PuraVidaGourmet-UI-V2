@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductoService } from '../../services/producto.service';
 import { Producto } from '../../interfaces/producto';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule, AbstractControl } from  '@angular/forms';
+import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule, ValidationErrors } from  '@angular/forms';
 
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -67,7 +67,8 @@ export class ProductoComponent implements OnInit {
       ],
       porcentajeMerma: ['',
         [Validators.required,
-          Validators.min(0)]
+          Validators.min(0),
+          Validators.max(1)]
       ]
     });
   }
@@ -135,6 +136,25 @@ export class ProductoComponent implements OnInit {
         this.alertOK(producto.nombre, "actualizado");
       });
     }
+  }
+
+  getFormValidationErrors() {
+    
+    console.log('%c ==>> Validation Errors: ', 'color: red; font-weight: bold; font-size:25px;');
+  
+    let totalErrors = 0;
+  
+    Object.keys(this.productoForm.controls).forEach(key => {
+      const controlErrors: any = this.productoForm.get(key)!.errors;
+      if (controlErrors != null) {
+         totalErrors++;
+         Object.keys(controlErrors).forEach(keyError => {
+           console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+          });
+      }
+    });
+  
+    console.log('Number of errors: ' ,totalErrors);
   }
 
   refresh() {

@@ -7,6 +7,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { TipoRecetaComponent } from './admin/tipo-receta/tipo-receta.component';
 import { TipoProductoComponent } from './admin/tipo-producto/tipo-producto.component';
 import { ProductoComponent } from './admin/producto/producto.component';
+import { RecetaComponent } from './admin/receta/receta.component';
 
 export const routes: Routes = [
     { path: '',
@@ -32,6 +33,9 @@ export const routes: Routes = [
         }, {
             path: 'producto',
             component: ProductoComponent
+        }, {
+            path: 'receta',
+            component: RecetaComponent
         }],
     },
     { path: '**', component: PageNotFoundComponent }
