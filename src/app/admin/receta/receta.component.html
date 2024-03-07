@@ -265,7 +265,7 @@
                                     <td>₡ {{receta.precioDeVenta}}</td>
                                     <td>₡ {{receta.costoReceta}}</td>
                                     <td>₡ {{receta.costoPorcion}}</td>
-                                    <td>{{receta.margenGanancia}}</td>
+                                    <td>{{receta.margenGanancia * 100}} %</td>
                                     <td>
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete" (click)="requestDelete(receta.id)">Eliminar</button>
                                     </td>

@@ -184,7 +184,8 @@ export class ProductoComponent implements OnInit {
       proveedor: '',
       tipoProducto: {
         id: 0,
-        nombre: ''
+        nombre: '',
+        ubicacion: ''
       },
       unidadMedida: '',
       precioDeCompra: 0,

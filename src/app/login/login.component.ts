@@ -39,7 +39,6 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log( "Trying loging: " + this.inputEmail + " - " + this.inputPassword);
     let user: LoginRequest = {
       "email": this.inputEmail,
       "password": this.inputPassword

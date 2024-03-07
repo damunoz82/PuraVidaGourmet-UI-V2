@@ -1,4 +1,5 @@
 export interface TipoProducto {
     id: number,
-    nombre: string
+    nombre: string,
+    ubicacion: string,
 }

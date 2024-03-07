@@ -38,7 +38,12 @@ export class TipoProductoComponent implements OnInit {
         [Validators.required,
         Validators.max(50),
         Validators.min(0)]
-      ]
+      ],
+      ubicacion: ['',
+        [Validators.required,
+        Validators.max(50),
+        Validators.min(0)]
+    ]
     });
   }
 
@@ -115,7 +120,8 @@ export class TipoProductoComponent implements OnInit {
   createEmptyTipoProducto(): TipoProducto {
     return {
       id: 0,
-      nombre: ''
+      nombre: '',
+      ubicacion: ''
     };
   }
 

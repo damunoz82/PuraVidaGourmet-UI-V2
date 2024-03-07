@@ -53,6 +53,17 @@
                             </div>
                             <div class="row">
                                 <div class="col">
+                                    <div class="mb-3">
+                                        <label for="ubicacion" class="form-label">Ubicacion</label>
+                                        <input type="text" class="form-control" name="ubicacion" aria-describedby="ubicacionHelp" formControlName="ubicacion" [ngClass]="{ 'is-invalid': tipoProductoForm.get('ubicacion')?.touched && tipoProductoForm.get('ubicacion')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!tipoProductoForm.get('ubicacion')?.valid">
+                                            <div id="ubicacionHelp" class="form-text">La ubicacion es requerida.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
                                     <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
                                 </div>
                                 <div class="col">
@@ -76,12 +87,14 @@
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Ubicacion</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let tipoProducto of tipoProductos">
                                     <td (click)="edit(tipoProducto.id)"><a>{{tipoProducto.nombre}}</a></td>
+                                    <td>{{tipoProducto.ubicacion}}</td>
                                     <td>
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete" (click)="requestDelete(tipoProducto.id)">Eliminar</button>
                                     </td>
