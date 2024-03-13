@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from '../../services/producto.service';
-import { Producto } from '../../interfaces/producto';
+import { Producto, createEmptyProducto } from '../../interfaces/producto';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule, ValidationErrors } from  '@angular/forms';
 
@@ -24,7 +24,7 @@ export class ProductoComponent implements OnInit {
   productoForm: FormGroup;
   public formShowing = false;
 
-  public delProducto: Producto = this.createEmptyProducto();
+  public delProducto: Producto = createEmptyProducto();
 
   public alertInfo = {
     'show': false,
@@ -172,28 +172,9 @@ export class ProductoComponent implements OnInit {
       catchError(this.handleError('deleteProducto'))
     ).subscribe(d => {
       this.alertOK(this.delProducto.nombre, "eliminado");
-      this.delProducto = this.createEmptyProducto();
+      this.delProducto = createEmptyProducto();
       this.loadProductos();
     });
-  }
-
-  createEmptyProducto(): Producto {
-    return {
-      id: 0,
-      nombre: '',
-      proveedor: '',
-      tipoProducto: {
-        id: 0,
-        nombre: '',
-        ubicacion: ''
-      },
-      unidadMedida: '',
-      precioDeCompra: 0,
-      cantidadPorUnidad: 0,
-      formatoCompra: '',
-      porcentajeMerma: 0,
-      costeUnitario: 0
-    };
   }
 
   handleError<T>(serviceName = '', operation = 'operation', result = {} as T) {

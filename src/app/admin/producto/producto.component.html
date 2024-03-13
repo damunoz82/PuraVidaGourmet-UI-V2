@@ -30,7 +30,6 @@
                 </div>
             </div>
 
-            <!-- for to create or edit -->
             <div [ngStyle]="{display: formShowing ? 'block' : 'none'}" class="row">
                 <div class="card mb-4">
                     <div class="card-header">
@@ -104,7 +103,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label for="cantidadPorUnidad" class="form-label">Cantidad por unidad</label>
-                                        <input type="text" class="form-control" name="cantidadPorUnidad" aria-describedby="cantidadPorUnidadHelp" formControlName="cantidadPorUnidad" [ngClass]="{ 'is-invalid': productoForm.get('cantidadPorUnidad')?.touched && productoForm.get('cantidadPorUnidad')?.errors}">
+                                        <input type="number" class="form-control" name="cantidadPorUnidad" aria-describedby="cantidadPorUnidadHelp" formControlName="cantidadPorUnidad" [ngClass]="{ 'is-invalid': productoForm.get('cantidadPorUnidad')?.touched && productoForm.get('cantidadPorUnidad')?.errors}">
                                         <div class="invalid-feedback" *ngIf="!productoForm.get('cantidadPorUnidad')?.valid">
                                             <div id="cantidadPorUnidadHelp" class="form-text">La cantidad por unidad es requerido.</div>  
                                         </div>
@@ -117,7 +116,7 @@
                                         <label for="precioDeCompra" class="form-label">Precio de compra</label>
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">₡</span>
-                                            <input type="text" class="form-control" name="precioDeCompra" aria-describedby="precioDeCompraHelp" formControlName="precioDeCompra" [ngClass]="{ 'is-invalid': productoForm.get('precioDeCompra')?.touched && productoForm.get('precioDeCompra')?.errors}">
+                                            <input type="number" class="form-control" name="precioDeCompra" aria-describedby="precioDeCompraHelp" formControlName="precioDeCompra" [ngClass]="{ 'is-invalid': productoForm.get('precioDeCompra')?.touched && productoForm.get('precioDeCompra')?.errors}">
                                         </div>
                                         <div class="invalid-feedback" *ngIf="!productoForm.get('precioDeCompra')?.valid">
                                             <div id="precioDeCompraHelp" class="form-text">El precio de compra es requerido.</div>  
@@ -127,7 +126,7 @@
                                 <div class="col">
                                     <div class="mb-3">
                                         <label for="porcentajeMerma" class="form-label">Porcentaje de merma</label>
-                                        <input type="text" class="form-control" name="porcentajeMerma" aria-describedby="porcentajeMerma" formControlName="porcentajeMerma" [ngClass]="{ 'is-invalid': productoForm.get('porcentajeMerma')?.touched && productoForm.get('porcentajeMerma')?.errors}">
+                                        <input type="number" class="form-control" name="porcentajeMerma" aria-describedby="porcentajeMerma" formControlName="porcentajeMerma" [ngClass]="{ 'is-invalid': productoForm.get('porcentajeMerma')?.touched && productoForm.get('porcentajeMerma')?.errors}">
                                         <div class="invalid-feedback" *ngIf="!productoForm.get('porcentajeMerma')?.valid">
                                             <div id="porcentajeMermaHelp" class="form-text">El porcentaje de merma es requerido.</div>  
                                         </div>

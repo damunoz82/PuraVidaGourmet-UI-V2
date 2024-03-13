@@ -18,7 +18,6 @@ export class HeaderComponent {
   }
 
   logout() {
-    console.log("logging out");
     this._storageService.clean();
     this._router.navigate(['']);
   }

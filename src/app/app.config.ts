@@ -1,5 +1,5 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
 import { routes } from './app.routes';
@@ -11,7 +11,7 @@ import { refreshTokenInterceptor } from './interceptors/refresh-token.intercepto
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(withInterceptors([refreshTokenInterceptor])),
     importProvidersFrom(HttpClientModule),
     DepartamentoService,

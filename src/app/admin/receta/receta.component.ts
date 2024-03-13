@@ -4,7 +4,7 @@ import { Receta, createEmptyReceta } from '../../interfaces/receta';
 import { Producto } from '../../interfaces/producto';
 import { Ingrediente } from '../../interfaces/ingrediente';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, AbstractControl, Validators, FormGroup, FormBuilder, FormsModule, ValidationErrors, FormArray } from  '@angular/forms';
+import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule, FormArray } from  '@angular/forms';
 
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -108,6 +108,7 @@ export class RecetaComponent implements OnInit {
       'producto': ['', Validators.required]
     }));
   }
+
   loadIngrediente(ingrediente: Ingrediente) {
     this.formIngredientes.push(this.formBuilder.group({
       'ingredienteId': ingrediente.ingredienteId,
@@ -195,6 +196,7 @@ export class RecetaComponent implements OnInit {
     }
   }
 
+  // fixme... que era esto??
   createBaseProductInfoForSubmition(id: number) {
     return {
       id: id
@@ -260,10 +262,7 @@ export class RecetaComponent implements OnInit {
     this.alertShowing = true;
   }
 
-  // validarIngredientes(control: AbstractControl) {
-
-  //   // const valid = this.recetaForm.value.ingredientes.length > 1;
-
-  //   return true ? null : {ingredientesInvalidos: true};
-  // }
+  formatValorEnMoneda(valor: number) {
+    return new Intl.NumberFormat().format(valor);
+  }
 }

@@ -1,0 +1,44 @@
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Inventarios</h1>
+
+            <!-- list-->
+            <div class="row">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Inventarios
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Periodo meta</th>
+                                    <th>Fecha de creacion</th>
+                                    <th>Responsable</th>
+                                    <th>valor en bodega</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let inv of inventarios">
+                                    <td (click)="viewDetails(inv.id)">{{inv.periodoMeta}}</td>
+                                    <td>{{inv.fecha_creacion}}</td>
+                                    <td>{{inv.responsable?.name}}</td>
+                                    <td>₡ {{formatValorEnMoneda(inv.totalValorEnBodega)}}</td>
+                                    <td>
+                                        <span class="badge text-bg-{{styleInventarioEstadoText(inv.estado)}}">{{displayInventarioEstadoText(inv.estado)}}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <button type="button" class="btn btn-primary" (click)="newInventario()">Nuevo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

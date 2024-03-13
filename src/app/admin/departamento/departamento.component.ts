@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DepartamentoService } from '../../services/departamento.service';
-import { Departamento } from '../../interfaces/departamento';
+import { Departamento, createEmptyDep } from '../../interfaces/departamento';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule, AbstractControl } from  '@angular/forms';
 import { User } from '../../interfaces/user';
@@ -26,7 +26,7 @@ export class DepartamentoComponent implements OnInit {
   departmentoForm: FormGroup;
   public formShowing = false;
 
-  public delDep: Departamento = this.createEmptyDep();
+  public delDep: Departamento = createEmptyDep();
 
   public alertInfo = {
     'show': false,
@@ -127,22 +127,12 @@ export class DepartamentoComponent implements OnInit {
       catchError(this.handleError('deleteDepartamento'))
     ).subscribe(d => {
       this.alertOK(this.delDep.nombre, "eliminado");
-      this.delDep = this.createEmptyDep();
+      this.delDep = createEmptyDep();
       this.loadDepartamentos();
     });
   }
 
-  createEmptyDep(): Departamento {
-    return {
-      id: 0,
-      nombre: '',
-      responsable: {
-        id: 0,
-        name: '',
-        email: ''
-      }
-    };
-  }
+  
 
   validateResponsable(control: AbstractControl, responsables: User[]) {
     const responsable:string = control.value;

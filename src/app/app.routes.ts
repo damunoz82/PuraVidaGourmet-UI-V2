@@ -8,6 +8,9 @@ import { TipoRecetaComponent } from './admin/tipo-receta/tipo-receta.component';
 import { TipoProductoComponent } from './admin/tipo-producto/tipo-producto.component';
 import { ProductoComponent } from './admin/producto/producto.component';
 import { RecetaComponent } from './admin/receta/receta.component';
+import { InventarioComponent } from './admin/inventario/inventario.component';
+import { InventarioNewComponent } from './admin/inventario-new/inventario-new.component';
+import { ContentComponent } from './admin/content/content.component';
 
 export const routes: Routes = [
     { path: '',
@@ -22,6 +25,14 @@ export const routes: Routes = [
         title: 'Panel Administrativo',
         component: AdminMainPageComponent,
         children: [{
+            path: '',
+            redirectTo: 'dashboard',
+            pathMatch: 'full'
+        }, {
+            path: 'dashboard',
+            component: ContentComponent
+        },
+        {
             path: 'departamento',
             component: DepartamentoComponent
         }, {
@@ -36,7 +47,21 @@ export const routes: Routes = [
         }, {
             path: 'receta',
             component: RecetaComponent
-        }],
+        }, {
+            path: 'inventario',
+            component: InventarioComponent
+        }, {
+            path: 'inventario-details',
+            // component: InventarioNewComponent,
+            children: [{
+                path: '',
+                component: InventarioNewComponent
+            },
+            {
+                path: ':id',
+                component: InventarioNewComponent
+            }]
+        },],
     },
     { path: '**', component: PageNotFoundComponent }
 ];

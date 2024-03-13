@@ -12,3 +12,22 @@ export interface Producto {
     "porcentajeMerma": number,
     "costeUnitario": number
 }
+
+export function createEmptyProducto(): Producto {
+    return {
+      id: 0,
+      nombre: '',
+      proveedor: '',
+      tipoProducto: {
+        id: 0,
+        nombre: '',
+        ubicacion: ''
+      },
+      unidadMedida: '',
+      precioDeCompra: 0,
+      cantidadPorUnidad: 0,
+      formatoCompra: '',
+      porcentajeMerma: 0,
+      costeUnitario: 0
+    };
+  }

@@ -1,0 +1,210 @@
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Inventario - Detalle</h1>
+        
+            <!-- alert -->
+            <div [ngStyle]="{display: alertShowing ? 'block' : 'none'}">
+                <div class="alert alert-{{alertInfo.type}} alert-dismissible fade show" role="alert">
+                    {{alertInfo.message}}
+                    <button type="button" class="btn-close" aria-label="Close" (click)="alertShowing = false"></button>
+                </div>
+            </div>
+
+            <!-- modal confirm abandonar-->
+            <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmDeleteLabel">Confirmar Abandono del Inventario</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Una vez abandonado el inventario para el periodo '{{inventario.periodoMeta}}' no sera posible retomarlo y se tendra que hacer uno nuevo.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="confirmarAbandonar()">Abandonar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- modal confirm terminar-->
+            <div class="modal fade" id="confirmTerminar" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmDeleteLabel">Confirmar Terminar el Inventario</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Una vez terminado el inventario para el periodo '{{inventario.periodoMeta}}' no sera posible hacerle mas modificaciones.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="confirmarAbandonar()">Terminar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- form to create or edit -->
+            <div class="row">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Agregar o Ver Detalle de un Inventario
+                    </div>
+                    <div class="card-body">
+                        <form name="productoForm" [formGroup]="inventarioForm" (ngSubmit)="inventarioForm.valid && onSubmit()" novalidate>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="periodoMeta" class="form-label">Periodo Meta</label>
+                                        <input type="hidden" name="id" formControlName="id"/>
+                                        <input type="text" class="form-control" name="periodoMeta" aria-describedby="periodoMetaHelp" formControlName="periodoMeta" [ngClass]="{ 'is-invalid': inventarioForm.get('periodoMeta')?.touched && inventarioForm.get('periodoMeta')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!inventarioForm.get('periodoMeta')?.valid">
+                                            <div id="periodoMetaHelp" class="form-text">El periodo meta es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label class="form-label"><strong>Estado:</strong></label><br />
+                                        <span class="badge text-bg-{{styleInventarioEstadoText(inventario.estado)}}">{{displayInventarioEstadoText(inventario.estado)}}</span><br />
+                                        @if(isEditing) {
+                                            <label class="form-label"><strong>Responsable y Fecha de Creacion:</strong></label><br />
+                                            <label class="form-label">{{inventarioForm.get('responsable')?.value}} / {{inventarioForm.get('fecha_creacion')?.value}}</label><br />
+                                            <label class="form-label"><strong>Ultima Modificacion:</strong></label><br />
+                                            <label class="form-label">{{inventario.fecha_modificacion}} por {{inventario.usuarioModifica?.name}}</label><br />
+                                            <label class="form-label"><strong>Valor en bodega:</strong></label><br />
+                                            <label class="form-label">₡ {{formatValorEnMoneda(inventario.totalValorEnBodega)}}</label>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-6">
+                                        <label for="comentario" class="form-label">Comentario</label>
+                                        <textarea class="form-control" name="comentario" aria-describedby="comentarioHelp" formControlName="comentario" [ngClass]="{ 'is-invalid': inventarioForm.get('comentario')?.touched && inventarioForm.get('comentario')?.errors}"></textarea>
+                                        <div class="invalid-feedback" *ngIf="!inventarioForm.get('comentario')?.valid">
+                                            <div id="comentarioHelp" class="form-text">El comentario es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @if(isEditing) {
+                                <div formGroupName="detalle">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h3>Detalle del inventario</h3>
+                                        </div>
+                                    </div>
+    
+                                    <div class="row" >
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <strong>Producto</strong>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <strong> Formato de compra y Unidad de medida</strong>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <strong>Cantidad por Unidad</strong>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <strong>Precio de compra</strong>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <strong>Cantidad en Bodega</strong>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="mb-2">
+                                                <strong>Valor</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+                                    @for (det of formDetalles.controls; track $index) {
+                                        @if(categoriaChanged(det.get('categoriaProducto')?.value)) {
+                                            <div class="row">
+                                                <div class="col">
+                                                    <strong>{{det.get('categoriaProducto')?.value}} / {{det.get('ubicacionProducto')?.value}}</strong>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="row" [formGroupName]="$index">
+                                            <div class="col">
+                                                <div class="mb-2">
+                                                    <input type="hidden" name="id" formControlName="detalleId"/>
+                                                    {{det.get('nombreProducto')?.value}}
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-2">
+                                                    {{det.get('formatoCompraProducto')?.value}} / {{det.get('unidadMedidaProducto')?.value}}
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-2">
+                                                    {{det.get('cantidadUnidadProducto')?.value}}
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-2">
+                                                    {{det.get('precioCompraProducto')?.value}}
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-2">
+                                                    <input type="number" class="form-control" name="cantidadEnBodega" formControlName="cantidadEnBodega">
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="mb-2">
+                                                    ₡ {{formatValorEnMoneda(det.get('valor')?.value)}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-secondary" (click)="cancel()">Regresar</button>
+                                </div>
+                                @if(isEditing && puedeAbandonarOSalvar()) {
+                                    <div class="col">
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDelete">Abandonar</button>
+                                    </div>
+                                }
+                                @if(!isEditing || puedeAbandonarOSalvar()) {
+                                    <div class="col">
+                                        <button type="submit" [disabled]="!inventarioForm.valid" class="btn btn-primary">Salvar</button>
+                                    </div>
+                                }
+                                @if(isEditing && puedeAbandonarOSalvar()) {
+                                    <div class="col">
+                                        <button type="button" [disabled]="!inventarioForm.valid" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmTerminar" (click)="submitYTerminar()">Salvar y Terminar</button>
+                                    </div>
+                                }
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
