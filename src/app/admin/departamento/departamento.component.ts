@@ -93,7 +93,7 @@ export class DepartamentoComponent implements OnInit {
 
   onSubmit() {
     let departamento = this.departmentoForm.value;
-    departamento.responsable = this.responsables.filter((r) => r.name === this.departmentoForm.value.responsable)[0];
+    departamento.responsable = this.responsables.filter((r) => r.name === this.departmentoForm.value.responsable)[0]; 
 
     if (departamento.id === null || departamento.id === '' || departamento.id <= 0) {
       this._departamentoService.nuevoDepartamento(departamento).pipe(

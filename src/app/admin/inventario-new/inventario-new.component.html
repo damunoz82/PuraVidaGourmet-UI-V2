@@ -43,7 +43,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="confirmarAbandonar()">Terminar</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="submitYTerminar()">Terminar</button>
                     </div>
                     </div>
                 </div>
@@ -196,7 +196,7 @@
                                 }
                                 @if(isEditing && puedeAbandonarOSalvar()) {
                                     <div class="col">
-                                        <button type="button" [disabled]="!inventarioForm.valid" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmTerminar" (click)="submitYTerminar()">Salvar y Terminar</button>
+                                        <button type="button" [disabled]="!inventarioForm.valid" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmTerminar">Salvar y Terminar</button>
                                     </div>
                                 }
                             </div>
