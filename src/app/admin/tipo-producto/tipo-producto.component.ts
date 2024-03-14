@@ -71,6 +71,7 @@ export class TipoProductoComponent implements OnInit {
       this.tipoProductoForm.patchValue({
         "id": tipoProducto.id,
         "nombre": tipoProducto.nombre,
+        "ubicacion": tipoProducto.ubicacion,
       });
       this.openForm()
     });
