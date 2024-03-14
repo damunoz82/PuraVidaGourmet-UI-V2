@@ -2,6 +2,26 @@
     <main>
         <div class="container-fluid px-4">
             <h1 class="mt-4">Dashboard</h1>
+
+            <div class="row">
+                <input type="text" [(ngModel)]="miMensaje">
+                <button type="button" (click)="sendMessage('test')" >Enviar</button>
+                <ol>
+                    <li>Start: </li>
+                @for(mens of mensajes; track $index) {
+                    <li>{{mens}}</li>
+                }
+                </ol>
+                <!-- {{mensajes}} -->
+            </div>
+
+
+
+
+
+
+
+
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">Dashboard</li>
             </ol>

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Departamento } from '../interfaces/departamento';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { StorageService } from './storage.service';
