@@ -179,7 +179,7 @@
                                 <div class="col">
                                     <div class="mb-6">
                                         <label for="alergenos" class="form-label">Ingredientes    </label>
-                                        <button type="button" class="btn btn-primary" (click)="aggregarIngrediente()">+</button>
+                                        <button type="button" class="btn btn-light" (click)="aggregarIngrediente()"><li class="fa-solid fa-plus"></li></button>
                                         <div class="invalid-feedback" *ngIf="!recetaForm.get('ingredientes')?.valid">
                                             <div id="alergenosHelp" class="form-text">Los ingredientes son requerido.</div>  
                                         </div>
@@ -227,9 +227,6 @@
                                 </div>
                                 <div class="col">
                                     <button type="submit" [disabled]="!recetaForm.valid" class="btn btn-primary">Salvar</button>
-                                    <!-- <button type="button" (click)="getFormValidationErrors()">
-                                        Test Form
-                                      </button> -->
                                 </div>
                             </div>
                         </form>

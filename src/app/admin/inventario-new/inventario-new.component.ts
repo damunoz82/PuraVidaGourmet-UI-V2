@@ -6,7 +6,7 @@ import { Inventario, createEmptyInventario } from '../../interfaces/inventario';
 import { StorageService } from '../../services/storage.service';
 
 import { HttpErrorResponse } from '@angular/common/http'; 
-import { ActivatedRoute, Params, Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { InventarioDetalle } from '../../interfaces/inventarioDetalle';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { InventarioEstados } from '../../consts/inventario.estado';

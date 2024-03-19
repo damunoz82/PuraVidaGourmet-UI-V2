@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { InventarioService } from '../../services/inventario.service';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, Validators, FormGroup, FormBuilder, FormsModule, AbstractControl } from  '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from  '@angular/forms';
 import { Inventario } from '../../interfaces/inventario';
-import { UsuariosService } from '../../services/usuarios.service';
-
-import { HttpErrorResponse } from '@angular/common/http';
-
-import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { InventarioEstados } from '../../consts/inventario.estado';
 

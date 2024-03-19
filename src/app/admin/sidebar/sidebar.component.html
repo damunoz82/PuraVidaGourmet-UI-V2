@@ -58,21 +58,16 @@
                 <div class="collapse" id="collapseConfig" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         <a class="nav-link" routerLink="/admin/departamento">Departamentos</a>
-                        
-                        <nav class="sb-sidenav-menu-nested nav" id="sidenavAccordionMenu">
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMenu" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Menu
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseMenu" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionMenu">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" routerLink="/admin/menu">Menu</a>
-                                    <a class="nav-link" routerLink="/admin/menu">Item Menu</a>
-                                </nav>
-                            </div>
-                        </nav>
-
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMenu" aria-expanded="false" aria-controls="collapseLayouts">
+                            Menu
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseMenu" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionMenu">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" routerLink="/admin/menu">Menu</a>
+                                <a class="nav-link" routerLink="/admin/menu-item">Item Menu</a>
+                            </nav>
+                        </div>
                         <a class="nav-link" routerLink="/admin/tipoReceta">Tipos de recetas</a>
                         <a class="nav-link" routerLink="/admin/tipoProducto">Tipos de productos</a>
                         <a class="nav-link" routerLink="/admin/producto">Productos</a>

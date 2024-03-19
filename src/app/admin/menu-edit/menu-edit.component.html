@@ -1,0 +1,102 @@
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Detalle de un Menu</h1>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Informacion del menu
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="nombreMenu" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" [(ngModel)]="nombreMenu" >
+                                </div>
+                                <div class="col-12">
+                                    <label for="temporada" class="form-label">Temporada</label>
+                                    <input type="text" class="form-control" [(ngModel)]="temporada" >
+                                </div>
+                                <div class="col-12">
+                                    <label for="descripcion" class="form-label">Descripcion</label>
+                                    <input type="text" class="form-control" [(ngModel)]="descripcion" >
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check form-switch">
+                                        <br />
+                                        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" [(checked)]="habilitado" [(ngModel)]="habilitado">
+                                        <label class="form-check-label" for="flexSwitchCheckChecked">Habilitado</label>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Aggrega una nueva Seccion
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-end">
+                                <div class="col-2">
+                                    <label for="nombreSeccion" class="form-label">Seccion</label>
+                                </div>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" [(ngModel)]="nombreSeccion" >
+                                </div>
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-light" (click)="addSeccion()"><li class="fa-solid fa-plus"></li></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Items de un Menu
+                        </div>
+                        <div class="card-body" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'items')">
+                            <ul class="list-group list-group-flush">
+                                <div class="list-group-item" draggable="true" *ngFor="let menuItem of itemsCards" (dragstart)="onDragStart(menuItem, 'items')">
+                                    <strong>{{menuItem.text}}</strong> <br />
+                                    {{menuItem.descripcion}}
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Menu
+                        </div>
+                        <div class="card-body" (dragover)="onDragOver($event)" (drop)="onDrop($event, 'menu')">
+                            <ul class="list-group list-group-flush">
+                                <div *ngFor="let menuItem of menuCards; index as i" draggable="true" class="list-group-item {{addStyle(menuItem.type)}}" (dragstart)="onDragStart(menuItem, 'menu')" id="{{i}}">
+                                    <strong>{{menuItem.text}}</strong> <br />
+                                    {{menuItem.descripcion}}
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary" (click)="guardar()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

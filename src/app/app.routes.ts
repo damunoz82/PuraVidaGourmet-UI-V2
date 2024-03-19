@@ -11,6 +11,9 @@ import { RecetaComponent } from './admin/receta/receta.component';
 import { InventarioComponent } from './admin/inventario/inventario.component';
 import { InventarioNewComponent } from './admin/inventario-new/inventario-new.component';
 import { ContentComponent } from './admin/content/content.component';
+import { MenuComponent } from './admin/menu/menu.component';
+import { MenuEditComponent } from './admin/menu-edit/menu-edit.component';
+import { ItemMenuComponent } from './admin/item-menu/item-menu.component';
 
 export const routes: Routes = [
     { path: '',
@@ -52,7 +55,6 @@ export const routes: Routes = [
             component: InventarioComponent
         }, {
             path: 'inventario-details',
-            // component: InventarioNewComponent,
             children: [{
                 path: '',
                 component: InventarioNewComponent
@@ -61,7 +63,23 @@ export const routes: Routes = [
                 path: ':id',
                 component: InventarioNewComponent
             }]
-        },],
+        }, {
+            path: 'menu',
+            component: MenuComponent
+        }, {
+            path: 'menu-details',
+            children: [{
+                path: '',
+                component: MenuEditComponent
+            },
+            {
+                path: ':id',
+                component: MenuEditComponent
+            }]
+        }, {
+            path: 'menu-item',
+            component: ItemMenuComponent
+        }],
     },
     { path: '**', component: PageNotFoundComponent }
 ];

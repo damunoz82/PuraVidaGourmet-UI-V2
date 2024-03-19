@@ -1,0 +1,132 @@
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Administracion de Elementos de Menu</h1>
+            
+            <!-- alert -->
+            <div [ngStyle]="{display: alertShowing ? 'block' : 'none'}">
+                <div class="alert alert-{{alertInfo.type}} alert-dismissible fade show" role="alert">
+                    {{alertInfo.message}}
+                    <button type="button" class="btn-close" aria-label="Close" (click)="alertShowing = false"></button>
+                </div>
+            </div>
+
+            <!-- modal confirm deletion-->
+            <div class="modal fade" id="confirmDelete" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="confirmDeleteLabel">Confirmar Eliminacion de Elemento de Menu</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Se intentara eliminar el departamento '{{menuItem.nombreComercial}}', sin embargo, si esta asociado no se podra eliminar.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="confirmDelete()">Eliminar</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for to create or edit -->
+            <div [ngStyle]="{display: formShowing ? 'block' : 'none'}" class="row">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Agregar o Editar un Elemento de Menu
+                    </div>
+                    <div class="card-body">
+                        <form name="departamentoForm" [formGroup]="menuItemForm" (ngSubmit)="menuItemForm.valid && onSubmit()" novalidate>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="nombreComercial" class="form-label">Nombre comercial</label>
+                                        <input type="hidden" name="id" formControlName="itemMenuId"/>
+                                        <input type="text" class="form-control" name="nombreComercial" aria-describedby="nombreComercialHelp" formControlName="nombreComercial" [ngClass]="{ 'is-invalid': menuItemForm.get('nombreComercial')?.touched && menuItemForm.get('nombreComercial')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!menuItemForm.get('nombreComercial')?.valid">
+                                            <div id="nombreComercialHelp" class="form-text">El nombre comercial es requerido.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="recetaId" class="form-label">Receta asociada</label>
+                                        <select class="form-select" name="recetaId" aria-describedby="recetaIdHelp" formControlName="recetaId" [ngClass]="{ 'is-invalid': menuItemForm.get('recetaId')?.touched && menuItemForm.get('recetaId')?.errors}" >
+                                            <option *ngFor="let receta of recetas" value="{{receta.id}}">{{receta.nombre}}</option>
+                                        </select>
+                                        <div class="invalid-feedback" *ngIf="menuItemForm.get('recetaId')?.valid">
+                                            <div id="recetaIdHelp" class="form-text">La receta asociada.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="descripcion" class="form-label">Descripcion</label>
+                                        <input type="text" class="form-control" name="descripcion" aria-describedby="descripcionHelp" formControlName="descripcion" [ngClass]="{ 'is-invalid': menuItemForm.get('descripcion')?.touched && menuItemForm.get('descripcion')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="!menuItemForm.get('descripcion')?.valid">
+                                            <div id="descripcionHelp" class="form-text">La descripcion es requerida.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="precioVenta" class="form-label">Precio de venta</label>
+                                        <input type="number" class="form-control" name="precioVenta" aria-describedby="precioVentaHelp" formControlName="precioVenta" [ngClass]="{ 'is-invalid': menuItemForm.get('precioVenta')?.touched && menuItemForm.get('precioVenta')?.errors}">
+                                        <div class="invalid-feedback" *ngIf="menuItemForm.get('precioVenta')?.valid">
+                                            <div id="precioVentaHelp" class="form-text">La receta asociada.</div>  
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+                                </div>
+                                <div class="col">
+                                    <button type="submit" [disabled]="!menuItemForm.valid" class="btn btn-primary">Salvar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- list-->
+            <div class="row">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        Elementos de Menu
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre Comercial</th>
+                                    <th>Precio de Venta</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let it of menuItems">
+                                    <td (click)="edit(it.itemMenuId)"><a>{{it.nombreComercial}}</a></td>
+                                    <td>₡ {{formatValorEnMoneda(it.precioVenta? it.precioVenta : 0)}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete" (click)="requestDelete(it.itemMenuId)">Eliminar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div [ngStyle]="{display: formShowing ? 'none' : 'block'}">
+                            <button type="button" class="btn btn-primary" (click)="openForm()">Nuevo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
