@@ -14,6 +14,7 @@ import { ContentComponent } from './admin/content/content.component';
 import { MenuComponent } from './admin/menu/menu.component';
 import { MenuEditComponent } from './admin/menu-edit/menu-edit.component';
 import { ItemMenuComponent } from './admin/item-menu/item-menu.component';
+import { MesaComponent } from './admin/mesa/mesa.component';
 
 export const routes: Routes = [
     { path: '',
@@ -63,6 +64,9 @@ export const routes: Routes = [
                 path: ':id',
                 component: InventarioNewComponent
             }]
+        }, {
+            path: 'restaurante-mesa',
+            component: MesaComponent
         }, {
             path: 'menu',
             component: MenuComponent
