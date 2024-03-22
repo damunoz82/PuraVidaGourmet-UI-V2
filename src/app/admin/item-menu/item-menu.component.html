@@ -108,6 +108,7 @@
                                 <tr>
                                     <th>Nombre Comercial</th>
                                     <th>Precio de Venta</th>
+                                    <th>Departamento Responsable</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -115,6 +116,7 @@
                                 <tr *ngFor="let it of menuItems">
                                     <td (click)="edit(it.itemMenuId)"><a>{{it.nombreComercial}}</a></td>
                                     <td>₡ {{formatValorEnMoneda(it.precioVenta? it.precioVenta : 0)}}</td>
+                                    <td>Pending... fixme</td>
                                     <td>
                                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDelete" (click)="requestDelete(it.itemMenuId)">Eliminar</button>
                                     </td>

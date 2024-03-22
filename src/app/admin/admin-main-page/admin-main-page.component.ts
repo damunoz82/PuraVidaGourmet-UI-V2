@@ -15,9 +15,6 @@ import { StorageService } from '../../services/storage.service';
 })
 export class AdminMainPageComponent implements OnInit {
 
-  path = "";
-  isHome = true;
-
   constructor(private _router: Router, 
     private _storageService: StorageService) {}
 

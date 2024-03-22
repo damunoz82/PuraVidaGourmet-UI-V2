@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FooterComponent } from '../footer/footer.component';
 import { Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
@@ -12,7 +12,7 @@ import { Orden } from '../../interfaces/orden';
   templateUrl: './content.component.html',
   styleUrl: './content.component.css'
 })
-export class ContentComponent implements OnInit{
+export class ContentComponent implements OnInit, OnDestroy{
 
   private stompClient: any;
 
@@ -21,6 +21,10 @@ export class ContentComponent implements OnInit{
 
   constructor() {
     this.initSocketConnection();
+  }
+
+  ngOnDestroy(): void {
+    this.stompClient.disconnect();
   }
 
   ngOnInit(): void {

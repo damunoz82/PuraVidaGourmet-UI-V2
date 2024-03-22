@@ -15,6 +15,14 @@ import { MenuComponent } from './admin/menu/menu.component';
 import { MenuEditComponent } from './admin/menu-edit/menu-edit.component';
 import { ItemMenuComponent } from './admin/item-menu/item-menu.component';
 import { MesaComponent } from './admin/mesa/mesa.component';
+import { HomeComponent } from './home/home.component';
+import { CocinaComponent } from './restaurante/cocina/cocina.component';
+import { RestMainPageComponent } from './restaurante/rest-main-page/rest-main-page.component';
+import { OrdenesComponent } from './admin/ordenes/ordenes.component';
+import { DashboardComponent } from './restaurante/dashboard/dashboard.component';
+import { CajaComponent } from './restaurante/caja/caja.component';
+import { ServicioComponent } from './restaurante/servicio/servicio.component';
+import { BarComponent } from './restaurante/bar/bar.component';
 
 export const routes: Routes = [
     { path: '',
@@ -25,11 +33,39 @@ export const routes: Routes = [
         title: 'Login',
         component: LoginComponent
     },
+    { path: 'home',
+        title: 'Home',
+        component: HomeComponent
+    },
+    { path: 'restaurante',
+        title: 'Panel Restaurante',
+        component: RestMainPageComponent,
+        children: [{
+            path: '', 
+            redirectTo: 'dashboard',
+            pathMatch: 'full'
+        }, {
+            path: 'dashboard',
+            component: DashboardComponent
+        }, {
+            path: 'cocina',
+            component: CocinaComponent
+        }, {
+            path: 'caja',
+            component: CajaComponent
+        }, {
+            path: 'servicio',
+            component: ServicioComponent
+        }, {
+            path: 'bar',
+            component: BarComponent
+        }]
+    },
     { path: 'admin',
         title: 'Panel Administrativo',
         component: AdminMainPageComponent,
         children: [{
-            path: '',
+            path: '', 
             redirectTo: 'dashboard',
             pathMatch: 'full'
         }, {
@@ -51,6 +87,9 @@ export const routes: Routes = [
         }, {
             path: 'receta',
             component: RecetaComponent
+        }, {
+            path: 'ordenes',
+            component: OrdenesComponent
         }, {
             path: 'inventario',
             component: InventarioComponent

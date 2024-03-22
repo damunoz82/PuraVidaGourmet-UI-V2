@@ -1,0 +1,32 @@
+<h1 class="mt-4">Bar - Pedidos Activos</h1>
+<p>A continuacion los pedidos activos para el bar</p>
+<p><strong>Se atienden de Izquierda a Derecha!</strong></p>
+<ul class="list-group list-group-horizontal">
+    @for(orden of ordenes; track $index) {
+        <li class="list-group-item">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                  {{orden.header}}
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @for(detalle of orden.details; track $index) {
+                            <li class="list-group-item">{{detalle.item.nombreComercial}} - {{detalle.cantidad}}</li>
+                        }
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-light"><li class="fa-solid fa-ban"></li></button>
+                        </div>
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-light"><li class="fa-solid fa-check"></li></button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+        </li>
+    }
+  </ul>

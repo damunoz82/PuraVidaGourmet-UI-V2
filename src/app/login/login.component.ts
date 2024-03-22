@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
       ).subscribe((loginInfo) => {
         this._storageService.clean();
         this._storageService.setSessionInfo(loginInfo as TokenInfo);
-        this._router.navigate(['/admin']);
+        this._router.navigate(['/home']);
       });
   }
 
